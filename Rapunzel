@@ -1,0 +1,130 @@
+/*结构
+ 定义按钮
+ 定义视频播放
+ 播放函数{视频地址}
+ 按钮函数{movie()=mouvie()}
+ 文字函数
+ 点击函数{调用按钮}
+ */
+
+
+import processing.video.*;
+
+Movie movie;
+Movie movie2;
+
+float rectX, rectX2;
+float rectY;
+float rectWidth;
+float rectHeight;
+
+PFont options1;
+PFont options2;
+
+PImage img;
+PImage img2;
+
+void setup() {
+  size(682, 384);
+  background(220);
+  img = loadImage("bg.png");
+  img2 = loadImage("ms.png");
+
+  String[]fontList = PFont.list();
+  printArray(fontList);
+  options1 = createFont("微软雅黑 Bold", 32);
+  options2 = createFont("微软雅黑 Bold", 32);
+
+  movie = new Movie(this, "stroy 1.mp4");
+  movie2 = new Movie(this, "stroy 2.mp4");
+}
+
+
+void moieEvent(Movie m)
+{ 
+  m.read();
+}
+
+
+void draw() {
+  //bg
+  image(img, 0, 0, 768, 432);
+
+  button();
+  text();
+
+  //mouse
+  image(img2, mouseX, mouseY, 42, 55);
+  if (movie.available() == true) {
+    movie.read();
+  } else if (movie.available() == false) {
+    movie2.read();
+  }
+
+  image(movie2, 0, 0, width, height);
+  image(movie, 0, 0, width, height);
+}
+
+
+int button1 = 180;
+int button2 = 180;
+int col1 = 0;
+int col2 = 0;
+
+void button() {
+  rectX = 130;
+  rectX2 = 411;
+  rectY = 142;
+  rectWidth = 140;
+  rectHeight = 80;
+  fill(0, 0, 0, button1);
+  stroke(col1);
+  strokeWeight(3);
+  rect(rectX, rectY, rectWidth, rectHeight, 10);
+  fill(0, 0, 0, button2);
+  stroke(col2);
+  rect(rectX2, rectY, rectWidth, rectHeight, 10);
+
+//在按钮范围内时，触发按钮反馈
+  if (mouseX >= rectX2  &&  mouseX <= rectX2 + rectWidth  
+    &&  mouseY >= rectY && mouseY <= rectY + rectHeight) {
+    button2 = 255;
+    col2 = 255;
+  } else {
+    button2 = 180;
+    col2 = 0;
+  }
+
+  if (mouseX >= rectX  &&  mouseX <= rectX + rectWidth  
+    &&  mouseY >= rectY && mouseY <= rectY + rectHeight) {
+    button1 = 255;
+    col1 = 255;
+  } else {
+    button1 = 180;
+    col1 = 0;
+  }
+}
+
+void text() {
+  fill(255);
+  textFont(options1);
+  textSize(30);
+  text("現実", 171, 190);
+  textFont(options2);
+  textSize(30);
+  text("メルヘン", 422, 190);
+}
+
+
+void mousePressed()
+{
+  if (mouseX >= rectX2  &&  mouseX <= rectX2 + rectWidth  
+    &&  mouseY >= rectY && mouseY <= rectY + rectHeight ) {
+    // background(50);
+    movie2.play();
+  } else if (mouseX >= rectX   &&  mouseX <= rectX + rectWidth
+    &&  mouseY >= rectY && mouseY <= rectY + rectHeight) {
+    //background(100);
+    movie.play();
+  }
+}
